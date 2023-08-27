@@ -1,23 +1,20 @@
-import { useSelector } from "react-redux";
-import ContactForm from "./ContactForm/ContactForm";
-import Filter from "./Filter/Filter";
-import ContactList from "./ListContact/ContatcList";
-import Loading from "./Loading/Loading";
-import { filterSelector } from "store/filterSlice/selectors";
-import { contactsSelector } from "store/contactsSlice/selectors";
-
+import { ContactForm } from './Phonebook/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
+import { useSelector } from 'react-redux';
+import { getContacts } from './redux/selectors';
 
 export const App = () => {
-  const filter = useSelector(filterSelector);
-  const {isLoading} = useSelector(contactsSelector);
+  const { isLoading, error } = useSelector(getContacts);
   return (
-    <div style={{ padding: "35px" }}>
-      <h2>Phonebook</h2>
-      <ContactForm  />
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm />
       <h2>Contacts</h2>
-       {isLoading && <Loading/>}
-      { filter && <ContactList />}
+      {isLoading && <div style={{marginLeft: '30px'}}>Loading...</div>}
+      {error && <div>{error.message}</div>}
       <Filter />
+      <ContactList />
     </div>
   );
 };
